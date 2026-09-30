@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1433b8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;700;800&family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="img/logo-nassah.png">
+<title>Espace revendeurs — Nassah</title>
+<meta name="description" content="Devenez revendeur Nassah : grossistes, détaillants, distributeurs. Préparez votre commande avec le simulateur.">
+</head><body>
+<div id="hdr"></div>
+<main id="main">
+<section class="phero" style="--c1:#ff4a50;--c2:#1433b8"><canvas class="bcanvas" data-n="24"></canvas>
+ <div class="wrap" style="position:relative;z-index:2;padding-block:150px 130px;pointer-events:none">
+  <nav class="crumb" aria-label="Fil d'Ariane" style="pointer-events:auto"><a href="index.html" data-ar="الرئيسية">Accueil</a><span>/</span><span data-ar="الموزّعون">Revendeurs</span></nav>
+  <h1 data-ar="بيعوا ناصح<br>في محلكم.">Vendez Nassah<br>dans votre magasin.</h1>
+  <p class="lead" data-ar="علامة يعرفها زبائنكم منذ 60 سنة. حضّروا طلبيتكم أدناه وسيتصل بكم فريقنا التجاري.">Une marque que vos clients connaissent depuis 60 ans. Préparez votre commande ci-dessous, notre équipe commerciale vous rappelle.</p>
+ </div>
+ <svg class="hwave" viewBox="0 0 1440 110" preserveAspectRatio="none"><path d="M0 70 C240 10 480 110 720 60 S1200 10 1440 60 V110 H0Z"/></svg>
+</section>
+<section style="padding-top:10px"><div class="wrap">
+ <div class="perks">
+  <div class="perk rv"><div class="e">🏷️</div><h3 data-ar="علامة معروفة">Une marque connue</h3><p data-ar="ناصح في البيوت الجزائرية منذ 1965.">Présente dans les foyers algériens depuis 1965.</p></div>
+  <div class="perk rv"><div class="e">📦</div><h3 data-ar="تشكيلة كاملة">Une gamme complète</h3><p data-ar="من الأواني إلى المزرعة: منتج لكل رف.">De la vaisselle à l'élevage : un produit pour chaque rayon.</p></div>
+  <div class="perk rv"><div class="e">📣</div><h3 data-ar="حملات منتظمة">Des campagnes régulières</h3><p data-ar="منشورات وحملات على فيسبوك تدفع الطلب في محلكم.">Des publications Facebook régulières qui font venir les clients en rayon.</p></div>
+ </div>
+ <h2 class="rv" style="margin-top:70px" data-ar="حضّروا طلبيتكم.">Préparez votre commande.</h2>
+ <p class="rv" style="margin-top:10px;opacity:.8;max-width:560px" data-ar="اختاروا عدد الكراتين لكل منتج. الأسعار والشروط يرسلها لكم فريقنا.">Indiquez le nombre de cartons par produit. Tarifs et conditions vous sont envoyés par notre équipe.</p>
+ <div class="sim">
+  <div id="rows"></div>
+  <div class="recap"><h3 data-ar="ملخص الطلب">Votre sélection</h3><ul id="rc"></ul><div class="tot" id="tot"></div>
+   <form class="f" id="form" style="background:transparent;padding:0;grid-template-columns:1fr">
+    <input required placeholder="Nom / Société" data-ar-ph="الاسم / المؤسسة">
+    <input type="tel" required placeholder="Téléphone" data-ar-ph="الهاتف">
+    <input placeholder="Wilaya" data-ar-ph="الولاية">
+    <select id="typ"></select>
+    <button class="btn y" type="submit" data-ar="إرسال الطلب">Envoyer la demande</button>
+   </form></div>
+ </div>
+</div></section>
+</main>
+<div id="ftr"></div>
+<script src="data.js"></script><script src="app.js"></script>
+<script>
+const Q={};ORDER.forEach(k=>Q[k]=0);
+function draw(){document.getElementById('rows').innerHTML=ORDER.map(k=>{const p=P[k];return '<div class="srow">'+pimg(k)+'<div><b>'+L(p.name,p.ar)+'</b><small>'+p.fmt+' · '+L(p.type,p.typeAr)+'</small></div><div class="qty"><button type="button" data-k="'+k+'" data-d="-1" aria-label="'+L('Retirer un carton','نقص كرتونة')+'">−</button><output>'+Q[k]+'</output><button type="button" data-k="'+k+'" data-d="1" aria-label="'+L('Ajouter un carton','زيد كرتونة')+'">+</button></div></div>'}).join('');recap()}
+function recap(){const s=ORDER.filter(k=>Q[k]>0),t=s.reduce((a,k)=>a+Q[k],0);
+ document.getElementById('rc').innerHTML=s.length?s.map(k=>'<li><span>'+L(P[k].name,P[k].ar)+'</span><b>'+Q[k]+'</b></li>').join(''):'<li style="border:0;opacity:.7">'+L('Ajoutez des cartons avec les boutons +.','أضيفوا الكراتين بزر +.')+'</li>';
+ document.getElementById('tot').textContent=t+' '+L(t>1?'cartons':'carton','كرتونة');
+ const ty=document.getElementById('typ'),i=ty.selectedIndex;ty.innerHTML=[['Grossiste','تاجر جملة'],['Détaillant / supérette','تاجر تجزئة'],['Distributeur régional','موزّع جهوي'],['Collectivité / entreprise','مؤسسة']].map(o=>'<option>'+L(o[0],o[1])+'</option>').join('');ty.selectedIndex=Math.max(0,i)}
+document.getElementById('rows').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;Q[b.dataset.k]=Math.max(0,Q[b.dataset.k]+ +b.dataset.d);b.parentElement.querySelector('output').textContent=Q[b.dataset.k];recap()});
+document.getElementById('form').onsubmit=e=>{e.preventDefault();okForm(e.target,'Demande envoyée !','تم إرسال الطلب!')};
+draw();document.addEventListener('langchange',draw);App.refresh();
+</script>
+</body></html>

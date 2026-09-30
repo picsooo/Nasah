@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1433b8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;700;800&family=Readex+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="icon" href="img/logo-nassah.png">
+<title>Fiche produit — Nassah</title>
+<meta name="description" content="Fiche technique produit Nassah : description, mode d'emploi, précautions et formats.">
+</head><body>
+<div id="hdr"></div>
+<main id="main">
+<section class="phero" id="ph"><canvas class="bcanvas" data-n="24"></canvas>
+ <div class="wrap hgrid">
+  <div>
+   <nav class="crumb" aria-label="Fil d'Ariane"><a href="index.html" data-ar="الرئيسية">Accueil</a><span>/</span><a href="index.html#gamme" data-ar="المنتجات">Produits</a><span>/</span><span id="cb"></span></nav>
+   <h1 id="pn"></h1>
+   <div class="x3d w" id="ps"></div>
+   <p class="lead" id="pl"></p>
+   <div class="tags" id="pt"></div>
+   <div class="acts"><a class="btn" id="pq" href="revendeurs.html"></a><a class="btn ghost" href="index.html#contact" id="pf"></a></div>
+  </div>
+  <div class="hstage"><span class="sun"></span><span class="sun2"></span><i class="ring"></i><i class="ring"></i><div class="hprod" id="pi"></div></div>
+ </div>
+ <svg class="hwave" viewBox="0 0 1440 110" preserveAspectRatio="none"><path d="M0 70 C240 10 480 110 720 60 S1200 10 1440 60 V110 H0Z"/></svg>
+</section>
+<section style="padding-top:20px"><div class="wrap pgrid">
+ <div>
+  <div class="panel rv"><h2 data-ar="المنتج">Le produit</h2><p id="pd"></p><div class="specs" id="sp"></div></div>
+  <div class="panel rv" style="margin-top:18px"><h2 data-ar="طريقة الاستعمال">Mode d'emploi</h2><ol class="steps" id="pu"></ol></div>
+  <div class="panel rv" style="margin-top:18px"><h2 data-ar="احتياطات">Précautions</h2><ul class="caut" id="pc"></ul><p style="font-size:13px;opacity:.65;margin-top:14px" data-ar="نصائح عامة: اتبعوا دائما الإرشادات المكتوبة على العبوة.">Conseils généraux : suivez toujours les indications de l'étiquette.</p></div>
+ </div>
+ <div class="rv"><div class="panel"><h2 data-ar="في حملاتنا">En campagne</h2><div class="postimg"><img id="pp" alt=""></div></div></div>
+</div></section>
+<section style="padding-top:0"><div class="wrap"><h2 class="rv" data-ar="قد يهمّكم أيضا">Vous aimerez aussi</h2><div class="rel" id="rel"></div></div></section>
+</main>
+<div id="ftr"></div>
+<script src="data.js"></script><script src="app.js"></script>
+<script>
+const k=P[new URLSearchParams(location.search).get('p')]?new URLSearchParams(location.search).get('p'):'vaisselle',p=P[k];
+const ph=document.getElementById('ph');ph.style.setProperty('--c1',p.c1);ph.style.setProperty('--c2',p.c2);ph.style.setProperty('--k',p.ink);
+document.querySelector('.sun').innerHTML=burst('',18);document.querySelector('.sun2').innerHTML=burst('',14);
+document.getElementById('pi').innerHTML=pimg(k);
+document.getElementById('ps').textContent=p.slogan;
+document.getElementById('pp').src=p.post;document.getElementById('pp').alt='Campagne '+p.name;
+function draw(){document.title=L(p.name,p.ar)+' — Nassah';
+ document.getElementById('cb').textContent=L(p.name,p.ar);
+ document.getElementById('pn').textContent=L(p.name,p.ar);
+ document.getElementById('pl').textContent=L(p.short,p.shortAr);
+ document.getElementById('pt').innerHTML=p.tags.map(t=>'<span>'+L(t[0],t[1])+'</span>').join('');
+ document.getElementById('pq').textContent=L('Commander en gros','اطلبوا بالجملة');
+ document.getElementById('pf').textContent=L('Demander la FDS','اطلبوا FDS');
+ document.getElementById('pd').textContent=L(p.desc,p.descAr);
+ document.getElementById('sp').innerHTML='<div><small>'+L('Format','الحجم')+'</small><b>'+p.fmt+'</b></div><div><small>'+L('Catégorie','الصنف')+'</small><b>'+L(p.type,p.typeAr)+'</b></div><div><small>'+L('Usage','الاستعمال')+'</small><b>'+p.cat.map(c=>{const x=CATS.find(y=>y.k===c);return L(x.fr,x.ar)}).join(', ')+'</b></div><div><small>'+L('Marque','العلامة')+'</small><b>Nassah · 1965</b></div>';
+ document.getElementById('pu').innerHTML=p.uses.map(u=>'<li><span>'+L(u[0],u[1])+'</span></li>').join('');
+ document.getElementById('pc').innerHTML=p.cautions.map(u=>'<li>'+IC.warn+'<span>'+L(u[0],u[1])+'</span></li>').join('');
+ const rel=ORDER.filter(x=>x!==k).sort((a,b)=>(P[b].cat.some(c=>p.cat.includes(c))?1:0)-(P[a].cat.some(c=>p.cat.includes(c))?1:0)).slice(0,4);
+ document.getElementById('rel').innerHTML=rel.map(x=>{const q=P[x];return '<a class="card" href="produit.html?p='+x+'" style="--c1:'+q.c1+';--c2:'+q.c2+';--k:'+q.ink+'">'+burst('sb',16)+'<span class="fmt">'+q.fmt+'</span><div class="pi">'+pimg(x)+'</div><div class="tx"><span class="ty">'+L(q.type,q.typeAr)+'</span><h3>'+L(q.name,q.ar)+'</h3><span class="go">'+L('Voir','اكتشفوا')+'</span></div></a>'}).join('')}
+draw();document.addEventListener('langchange',draw);App.refresh();
+</script>
+</body></html>
